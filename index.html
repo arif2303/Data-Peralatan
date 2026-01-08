@@ -93,9 +93,19 @@
     ];
     let table;
 
-    $(document).ready(function() {
-        renderTabel();
-    });
+   $(document).ready(function() {
+    loadData();
+});
+
+function loadData() {
+    fetch(API_URL)
+        .then(res => res.json())
+        .then(data => {
+            dataAlat = data;
+            renderTabel();
+        });
+}
+
 
     function renderTabel() {
         if ($.fn.DataTable.isDataTable('#tabelAlat')) {
@@ -141,32 +151,44 @@
     }
 
     function hapusData(index) {
-        if (confirm("Apakah Anda yakin ingin menghapus data ini?")) {
-            dataAlat.splice(index, 1);
-            renderTabel();
-        }
+    if (confirm("Hapus data ini?")) {
+        fetch(API_URL, {
+            method: "POST",
+            body: JSON.stringify({
+                action: "delete",
+                row: index
+            })
+        }).then(() => loadData());
     }
+}
 
-    $('#formAlat').on('submit', function(e) {
-        e.preventDefault();
-        const index = $('#editIndex').val();
-        const newData = {
-            nama: $('#namaAlat').val(),
-            tersedia: $('#ketersediaan').val(),
-            ket: $('#keterangan').val()
-        };
 
-        if (index === "-1") {
-            dataAlat.push(newData); // Tambah Baru
-        } else {
-            dataAlat[index] = newData; // Update data lama
-        }
+   $('#formAlat').on('submit', function(e) {
+    e.preventDefault();
+    const index = $('#editIndex').val();
 
+    const payload = {
+        action: index === "-1" ? "add" : "update",
+        row: index,
+        nama: $('#namaAlat').val(),
+        tersedia: $('#ketersediaan').val(),
+        ket: $('#keterangan').val()
+    };
+
+    fetch(API_URL, {
+        method: "POST",
+        body: JSON.stringify(payload)
+    }).then(() => {
         $('#modalAlat').modal('hide');
-        renderTabel();
+        loadData();
     });
-</script>
+});
+
+<script>
+const API_URL = "https://script.google.com/macros/s/AKfycbyROOuv-VX3_6umUDZQ91A3eQJ27LRicLNrclTHX1umuH9Of0K2jwJIMmTYfj5BZCmb7Q/exec";
+let dataAlat = [];
 
 </body>
 
 </html>
+
