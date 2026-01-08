@@ -36,19 +36,31 @@ img.thumb {
   border-radius:6px;
   cursor:pointer;
 }
+  .header-title h2 {
+  letter-spacing: 1.5px;
+}
+
+.header-title h4 {
+  letter-spacing: 1px;
+  opacity: 0.9;
+}
+
 </style>
 </head>
 
 <body>
-<div class="container mt-4">
+<div class="text-center mb-4 header-title">
+  <img src="logo-bmkg.png" alt="Logo BMKG" style="height:90px;margin-bottom:15px">
 
-<div class="text-center mb-4">
-  <h4 class="fw-bold text-primary">SiSCa</h4>
-  <h6 class="fw-bold text-primary">
-    Sistem Informasi Suku Cadang ALOPTAMA<br>
-    Stasiun Meteorologi Kelas I Supadio
-  </h6>
+  <h2 class="fw-bold text-primary mb-1">
+    SISTEM INFORMASI SUKU CADANG ALOPTAMA
+  </h2>
+
+  <h4 class="fw-bold text-primary">
+    STASIUN METEOROLOGI KELAS I SUPADIO
+  </h4>
 </div>
+
 
 <div class="card p-4">
 <button class="btn btn-tambah mb-3" onclick="bukaModalTambah()">+ Tambah Data</button>
@@ -202,3 +214,4 @@ loadData();
 </script>
 </body>
 </html>
+
