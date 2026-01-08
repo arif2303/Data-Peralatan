@@ -1,85 +1,102 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Suku Cadang Peralatan</title>
-    
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" rel="stylesheet">
-    
-    <style>
-        body { background-color: #f8f9fa; padding: 20px; font-family: sans-serif; }
-        .card-header { background-color: #007bff; color: white; font-weight: bold; font-size: 1.1rem; }
-        .btn-tambah { background-color: #198754; color: white; margin-bottom: 15px; }
-        .btn-tambah:hover { background-color: #146c43; color: white; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inventaris Suku Cadang Aloptama</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<link href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" rel="stylesheet">
+
+<style>
+body {
+    background-color: #f8f9fa;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+.card-header {
+    background-color: #0d6efd;
+    color: white;
+    font-weight: bold;
+}
+.btn-tambah {
+    background-color: #198754;
+    color: white;
+}
+</style>
 </head>
+
 <body>
 
 <div class="container mt-4">
-    <div class="card shadow-sm">
-        <div class="card-header text-uppercase">
-            Sistem Informasi Inventarisasi Suku Cadang Aloptama Stasiun Meteorologi Kelas I Supadio
-        </div>
-        <div class="card-body">
-            
-            <button class="btn btn-tambah" onclick="bukaModalTambah()">
-                + Tambah Data
-            </button>
-
-            <div class="table-responsive">
-                <table id="tabelAlat" class="table table-bordered table-hover">
-                    <thead>
-                        <tr>
-                            <th>NO.</th>
-                            <th>NAMA ALAT</th>
-                            <th>KETERSEDIAAN</th>
-                            <th>KETERANGAN</th>
-                            <th>AKSI</th>
-                        </tr>
-                    </thead>
-                    <tbody id="isiTabel">
-                        </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
+<div class="card shadow">
+<div class="card-header">
+Sistem Informasi Inventarisasi Suku Cadang Aloptama<br>
+Stasiun Meteorologi Kelas I Supadio
 </div>
 
-<div class="modal fade" id="modalAlat" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <form id="formAlat">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalTitle">Tambah Alat</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <input type="hidden" id="editIndex">
-                    <div class="mb-3">
-                        <label class="form-label">Nama Alat</label>
-                        <input type="text" id="namaAlat" class="form-control" required placeholder="Contoh: RS 232 Komunikasi">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Ketersediaan</label>
-                        <select id="ketersediaan" class="form-select">
-                            <option value="Ya">Ya</option>
-                            <option value="Tidak">Tidak</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Keterangan</label>
-                        <textarea id="keterangan" class="form-control" rows="3" placeholder="Lokasi atau kondisi alat"></textarea>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                    <button type="submit" class="btn btn-primary">Simpan Data</button>
-                </div>
-            </form>
-        </div>
-    </div>
+<div class="card-body">
+
+<button class="btn btn-tambah mb-3" onclick="bukaModalTambah()">+ Tambah Data</button>
+
+<div class="table-responsive">
+<table id="tabelAlat" class="table table-bordered table-hover">
+<thead>
+<tr>
+<th>NO</th>
+<th>NAMA ALAT</th>
+<th>KETERSEDIAAN</th>
+<th>KETERANGAN</th>
+<th>AKSI</th>
+</tr>
+</thead>
+<tbody id="isiTabel"></tbody>
+</table>
+</div>
+
+</div>
+</div>
+</div>
+
+<!-- MODAL -->
+<div class="modal fade" id="modalAlat" tabindex="-1">
+<div class="modal-dialog">
+<div class="modal-content">
+<form id="formAlat">
+<div class="modal-header">
+<h5 class="modal-title" id="modalTitle">Tambah Data</h5>
+<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+</div>
+
+<div class="modal-body">
+<input type="hidden" id="editIndex" value="-1">
+
+<div class="mb-3">
+<label class="form-label">Nama Alat</label>
+<input type="text" id="namaAlat" class="form-control" required>
+</div>
+
+<div class="mb-3">
+<label class="form-label">Ketersediaan</label>
+<select id="ketersediaan" class="form-select">
+<option value="Ya">Ya</option>
+<option value="Tidak">Tidak</option>
+</select>
+</div>
+
+<div class="mb-3">
+<label class="form-label">Keterangan</label>
+<textarea id="keterangan" class="form-control"></textarea>
+</div>
+</div>
+
+<div class="modal-footer">
+<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+<button type="submit" class="btn btn-primary">Simpan</button>
+</div>
+</form>
+</div>
+</div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -88,12 +105,11 @@
 <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
 
 <script>
-    let dataAlat = [
-        { nama: "RS 232 Komunikasi AWOS 15", tersedia: "Ya", ket: "Tersimpan di Teknisi" }
-    ];
-    let table;
+const API_URL = "PASTE_URL_APPS_SCRIPT_DISINI";
+let dataAlat = [];
+let table;
 
-   $(document).ready(function() {
+$(document).ready(function() {
     loadData();
 });
 
@@ -103,68 +119,72 @@ function loadData() {
         .then(data => {
             dataAlat = data;
             renderTabel();
-        });
+        })
+        .catch(err => alert("Gagal load data"));
 }
 
+function renderTabel() {
+    if ($.fn.DataTable.isDataTable('#tabelAlat')) {
+        $('#tabelAlat').DataTable().destroy();
+    }
 
-    function renderTabel() {
-        if ($.fn.DataTable.isDataTable('#tabelAlat')) {
-            $('#tabelAlat').DataTable().destroy();
+    let html = "";
+    dataAlat.forEach((item, i) => {
+        html += `
+        <tr>
+            <td>${i + 1}</td>
+            <td>${item.nama}</td>
+            <td>${item.tersedia}</td>
+            <td>${item.ket}</td>
+            <td>
+                <button class="btn btn-sm btn-primary" onclick="editData(${i})">Edit</button>
+                <button class="btn btn-sm btn-danger" onclick="hapusData(${i})">Hapus</button>
+            </td>
+        </tr>`;
+    });
+
+    $('#isiTabel').html(html);
+
+    table = $('#tabelAlat').DataTable({
+        language: {
+            search: "Cari:",
+            lengthMenu: "Tampilkan _MENU_ data"
         }
-
-        let html = "";
-        dataAlat.forEach((item, index) => {
-            html += `
-                <tr>
-                    <td>${index + 1}</td>
-                    <td>${item.nama}</td>
-                    <td>${item.tersedia}</td>
-                    <td>${item.ket}</td>
-                    <td>
-                        <button class="btn btn-primary btn-sm" onclick="editData(${index})">Edit</button>
-                        <button class="btn btn-danger btn-sm" onclick="hapusData(${index})">Hapus</button>
-                    </td>
-                </tr>`;
-        });
-        $('#isiTabel').html(html);
-        
-        table = $('#tabelAlat').DataTable({
-            "language": { "search": "Search:", "lengthMenu": "Show _MENU_ entries" }
-        });
-    }
-
-    function bukaModalTambah() {
-        $('#formAlat')[0].reset();
-        $('#editIndex').val("-1");
-        $('#modalTitle').text("Tambah Alat Baru");
-        $('#modalAlat').modal('show');
-    }
-
-    function editData(index) {
-        const item = dataAlat[index];
-        $('#editIndex').val(index);
-        $('#namaAlat').val(item.nama);
-        $('#ketersediaan').val(item.tersedia);
-        $('#keterangan').val(item.ket);
-        $('#modalTitle').text("Edit Data Alat");
-        $('#modalAlat').modal('show');
-    }
-
-    function hapusData(index) {
-    if (confirm("Hapus data ini?")) {
-        fetch(API_URL, {
-            method: "POST",
-            body: JSON.stringify({
-                action: "delete",
-                row: index
-            })
-        }).then(() => loadData());
-    }
+    });
 }
 
+function bukaModalTambah() {
+    $('#formAlat')[0].reset();
+    $('#editIndex').val("-1");
+    $('#modalTitle').text("Tambah Data");
+    new bootstrap.Modal(document.getElementById('modalAlat')).show();
+}
 
-   $('#formAlat').on('submit', function(e) {
+function editData(index) {
+    const d = dataAlat[index];
+    $('#editIndex').val(index);
+    $('#namaAlat').val(d.nama);
+    $('#ketersediaan').val(d.tersedia);
+    $('#keterangan').val(d.ket);
+    $('#modalTitle').text("Edit Data");
+    new bootstrap.Modal(document.getElementById('modalAlat')).show();
+}
+
+function hapusData(index) {
+    if (!confirm("Hapus data ini?")) return;
+
+    fetch(API_URL, {
+        method: "POST",
+        body: JSON.stringify({
+            action: "delete",
+            row: index
+        })
+    }).then(() => loadData());
+}
+
+$('#formAlat').on('submit', function(e) {
     e.preventDefault();
+
     const index = $('#editIndex').val();
 
     const payload = {
@@ -179,16 +199,13 @@ function loadData() {
         method: "POST",
         body: JSON.stringify(payload)
     }).then(() => {
-        $('#modalAlat').modal('hide');
+        bootstrap.Modal.getInstance(
+            document.getElementById('modalAlat')
+        ).hide();
         loadData();
     });
 });
-
-<script>
-const API_URL = "https://script.google.com/macros/s/AKfycbyROOuv-VX3_6umUDZQ91A3eQJ27LRicLNrclTHX1umuH9Of0K2jwJIMmTYfj5BZCmb7Q/exec";
-let dataAlat = [];
+</script>
 
 </body>
-
 </html>
-
