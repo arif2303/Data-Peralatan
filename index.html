@@ -6,189 +6,163 @@
 
 <title>SiSCa – Sistem Informasi Suku Cadang | BMKG Supadio</title>
 
-<!-- FAVICON LOGO BMKG -->
-<link rel="icon" type="image/png" href="logo-bmkg.png">
+<!-- FAVICON -->
+<link rel="icon" href="logo-bmkg.png" type="image/png">
 
+<!-- BOOTSTRAP & DATATABLE -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" rel="stylesheet">
 
-<!-- ===== CSS TEMA BMKG ===== -->
+<!-- STYLE -->
 <style>
 :root {
   --bmkg-blue: #0d6efd;
-  --bmkg-light: #eaf2ff;
   --bmkg-green: #198754;
 }
 
 body {
-  min-height: 100vh;
   background: linear-gradient(135deg, #eaf2ff, #f8fbff);
+  min-height: 100vh;
   font-family: "Segoe UI", Arial, sans-serif;
 }
 
-/* Header */
-.header-title h4,
-.header-title h5 {
-  color: #0b3ea8;
-  letter-spacing: 1px;
-}
-
-/* Card utama */
 .card {
-  border: none;
   border-radius: 14px;
   box-shadow: 0 10px 25px rgba(0,0,0,.08);
-  background: #fff;
-}
-
-/* Tombol */
-.btn-tambah {
-  background: linear-gradient(135deg, #198754, #20c997);
   border: none;
-  color: white;
-  font-weight: 600;
-  border-radius: 30px;
-  padding: 8px 18px;
-}
-.btn-tambah:hover {
-  opacity: .9;
 }
 
-/* Table */
-.table {
-  border-radius: 12px;
-  overflow: hidden;
-}
 .table thead {
   background: linear-gradient(135deg, #0d6efd, #0b5ed7);
   color: white;
 }
-.table tbody tr:hover {
-  background-color: #f1f6ff;
-}
 
-/* DataTables */
-.dataTables_wrapper .dataTables_filter input {
-  border-radius: 20px;
-  padding: 5px 12px;
-}
-.dataTables_wrapper .dataTables_length select {
-  border-radius: 20px;
-}
-
-/* Modal */
-.modal-content {
-  border-radius: 16px;
-}
-.modal-header {
-  background: linear-gradient(135deg, #0d6efd, #0b5ed7);
+.btn-tambah {
+  background: linear-gradient(135deg, #198754, #20c997);
+  border: none;
   color: white;
+  border-radius: 30px;
+  font-weight: 600;
+  padding: 8px 18px;
 }
-.modal-header .btn-close {
-  filter: invert(1);
+
+img.thumb {
+  height: 40px;
+  border-radius: 6px;
+  cursor: pointer;
 }
 </style>
 </head>
 
 <body>
 
-<div class="container my-4">
+<div class="container mt-4">
 
-  <!-- ===== HEADER DENGAN LOGO BMKG ===== -->
-  <div class="d-flex align-items-center justify-content-center mb-4 header-title">
-    <img src="logo-bmkg.png" alt="BMKG" style="height:80px;margin-right:18px;">
-    <div class="text-center">
-      <h4 class="fw-bold mb-1">
-        SISTEM INFORMASI INVENTARISASI SUKU CADANG ALOPTAMA
-      </h4>
-      <h5 class="fw-bold mb-0">
-        STASIUN METEOROLOGI KELAS I SUPADIO
-      </h5>
-    </div>
+  <!-- JUDUL -->
+  <div class="text-center mb-4">
+    <h4 class="fw-bold text-primary">SiSCa</h4>
+    <h6 class="fw-bold text-primary">
+      Sistem Informasi Suku Cadang ALOPTAMA<br>
+      Stasiun Meteorologi Kelas I Supadio
+    </h6>
   </div>
 
-  <!-- ===== CARD UTAMA ===== -->
   <div class="card p-4">
-
-    <button class="btn btn-tambah mb-3" onclick="bukaModalTambah()">
-      + Tambah Data
-    </button>
+    <button class="btn btn-tambah mb-3" onclick="bukaModalTambah()">+ Tambah Data</button>
 
     <div class="table-responsive">
       <table id="tabelAlat" class="table table-bordered table-hover">
         <thead>
           <tr>
-            <th>NO</th>
-            <th>NAMA ALAT</th>
-            <th>KETERSEDIAAN</th>
-            <th>KETERANGAN</th>
-            <th>AKSI</th>
+            <th>ID</th>
+            <th>Nama Alat</th>
+            <th>Ketersediaan</th>
+            <th>Keterangan</th>
+            <th>Gambar</th>
+            <th>Aksi</th>
           </tr>
         </thead>
         <tbody id="isiTabel"></tbody>
       </table>
     </div>
-
   </div>
 </div>
 
-<!-- ===== MODAL ===== -->
-<div class="modal fade" id="modalAlat" tabindex="-1">
-<div class="modal-dialog">
-<div class="modal-content">
-<form id="formAlat">
+<!-- MODAL TAMBAH / EDIT -->
+<div class="modal fade" id="modalAlat">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form id="formAlat">
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title" id="modalTitle">Tambah Data</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
 
-<div class="modal-header">
-<h5 class="modal-title" id="modalTitle">Tambah Data</h5>
-<button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        <div class="modal-body">
+          <input type="hidden" id="editIndex" value="-1">
+          <input type="hidden" id="editID">
+
+          <div class="mb-2">
+            <label class="form-label">Nama Alat</label>
+            <input type="text" id="namaAlat" class="form-control" required>
+          </div>
+
+          <div class="mb-2">
+            <label class="form-label">Ketersediaan</label>
+            <select id="ketersediaan" class="form-select">
+              <option value="Ya">Ya</option>
+              <option value="Tidak">Tidak</option>
+            </select>
+          </div>
+
+          <div class="mb-2">
+            <label class="form-label">Keterangan</label>
+            <textarea id="keterangan" class="form-control"></textarea>
+          </div>
+
+          <div class="mb-2">
+            <label class="form-label">Gambar Alat</label>
+            <input type="file" id="gambarAlat" class="form-control" accept="image/*">
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+          <button class="btn btn-primary" type="submit">Simpan</button>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
 
-<div class="modal-body">
-<input type="hidden" id="editIndex" value="-1">
-
-<div class="mb-3">
-<label class="form-label">Nama Alat</label>
-<input type="text" id="namaAlat" class="form-control" required>
+<!-- MODAL PREVIEW GAMBAR -->
+<div class="modal fade" id="modalPreview">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5>Preview Gambar Alat</h5>
+        <button class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body p-0">
+        <iframe id="iframePreview" style="width:100%;height:80vh;border:none"></iframe>
+      </div>
+    </div>
+  </div>
 </div>
 
-<div class="mb-3">
-<label class="form-label">Ketersediaan</label>
-<select id="ketersediaan" class="form-select">
-<option value="Ya">Ya</option>
-<option value="Tidak">Tidak</option>
-</select>
-</div>
-
-<div class="mb-3">
-<label class="form-label">Keterangan</label>
-<textarea id="keterangan" class="form-control"></textarea>
-</div>
-</div>
-
-<div class="modal-footer">
-<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-<button type="submit" class="btn btn-primary">Simpan</button>
-</div>
-
-</form>
-</div>
-</div>
-</div>
-
-<!-- ===== JS ===== -->
+<!-- SCRIPT -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
 
 <script>
-const API_URL = "https://script.google.com/macros/s/AKfycbxK5f-gU14dA0dEFQWL2GK4q83dacwItN_WCMfgUWBAI1e4IaabEXnaSNj0Q5U17512Qg/exec"; // GANTI DENGAN URL APPS SCRIPT
+const API_URL = "https://script.google.com/macros/s/AKfycbxC3UQC33OE2sZZC65wb2uZKGeyb0pfPKKtKAHe8fHYiGub1lGrB-YnjKLkfNfS024ofg/exec";
+
 let dataAlat = [];
 let table;
 
-$(document).ready(function() {
-  loadData();
-});
+$(document).ready(loadData);
 
 function loadData() {
   fetch(API_URL)
@@ -205,13 +179,19 @@ function renderTabel() {
   }
 
   let html = "";
-  dataAlat.forEach((item, i) => {
+  dataAlat.forEach((d, i) => {
     html += `
     <tr>
-      <td>${i + 1}</td>
-      <td>${item.nama}</td>
-      <td>${item.tersedia}</td>
-      <td>${item.ket}</td>
+      <td>${d.id}</td>
+      <td>${d.nama}</td>
+      <td>${d.tersedia}</td>
+      <td>${d.ket}</td>
+      <td>
+        ${d.gambar ? `
+        <img src="${d.gambar.replace('/view','/preview')}"
+             class="thumb"
+             onclick="previewGambar('${d.gambar}')">` : "-"}
+      </td>
       <td>
         <button class="btn btn-sm btn-primary" onclick="editData(${i})">Edit</button>
         <button class="btn btn-sm btn-danger" onclick="hapusData(${i})">Hapus</button>
@@ -220,62 +200,72 @@ function renderTabel() {
   });
 
   $('#isiTabel').html(html);
-
-  table = $('#tabelAlat').DataTable({
-    language: {
-      search: "Cari:",
-      lengthMenu: "Tampilkan _MENU_ data"
-    }
-  });
+  table = $('#tabelAlat').DataTable();
 }
 
 function bukaModalTambah() {
   $('#formAlat')[0].reset();
   $('#editIndex').val("-1");
   $('#modalTitle').text("Tambah Data");
-  new bootstrap.Modal(document.getElementById('modalAlat')).show();
+  new bootstrap.Modal('#modalAlat').show();
 }
 
-function editData(index) {
-  const d = dataAlat[index];
-  $('#editIndex').val(index);
+function editData(i) {
+  const d = dataAlat[i];
+  $('#editIndex').val(i);
+  $('#editID').val(d.id);
   $('#namaAlat').val(d.nama);
   $('#ketersediaan').val(d.tersedia);
   $('#keterangan').val(d.ket);
   $('#modalTitle').text("Edit Data");
-  new bootstrap.Modal(document.getElementById('modalAlat')).show();
+  new bootstrap.Modal('#modalAlat').show();
 }
 
-function hapusData(index) {
+function hapusData(i) {
   if (!confirm("Hapus data ini?")) return;
 
   fetch(API_URL, {
     method: "POST",
-    body: JSON.stringify({
-      action: "delete",
-      row: index
-    })
-  }).then(() => loadData());
+    body: JSON.stringify({ action: "delete", row: i })
+  }).then(loadData);
 }
 
-$('#formAlat').on('submit', function(e) {
+function previewGambar(url) {
+  $('#iframePreview').attr('src', url.replace('/view','/preview'));
+  new bootstrap.Modal('#modalPreview').show();
+}
+
+function getBase64(file) {
+  return new Promise(resolve => {
+    const r = new FileReader();
+    r.onload = () => resolve(r.result.split(",")[1]);
+    r.readAsDataURL(file);
+  });
+}
+
+$('#formAlat').on('submit', async function(e) {
   e.preventDefault();
 
+  let base64 = "";
+  const file = $('#gambarAlat')[0].files[0];
+  if (file) base64 = await getBase64(file);
+
   const index = $('#editIndex').val();
+  const payload = {
+    action: index === "-1" ? "add" : "update",
+    row: index,
+    id: $('#editID').val(),
+    nama: $('#namaAlat').val(),
+    tersedia: $('#ketersediaan').val(),
+    ket: $('#keterangan').val(),
+    imageBase64: base64
+  };
 
   fetch(API_URL, {
     method: "POST",
-    body: JSON.stringify({
-      action: index === "-1" ? "add" : "update",
-      row: index,
-      nama: $('#namaAlat').val(),
-      tersedia: $('#ketersediaan').val(),
-      ket: $('#keterangan').val()
-    })
+    body: JSON.stringify(payload)
   }).then(() => {
-    bootstrap.Modal.getInstance(
-      document.getElementById('modalAlat')
-    ).hide();
+    bootstrap.Modal.getInstance(document.getElementById('modalAlat')).hide();
     loadData();
   });
 });
@@ -283,4 +273,3 @@ $('#formAlat').on('submit', function(e) {
 
 </body>
 </html>
-
