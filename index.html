@@ -281,25 +281,34 @@ let html="";
 dataAlat.forEach((d,i)=>{
 html+=`
 <tr>
-<td>${d.id}</td>
-<td>${d.nama}</td>
-<td>${d.tersedia}</td>
-<td>${d.ket}</td>
-<td class="text-center">
-  ${d.gambar ? `
-    <div class="thumb-wrap" onclick="preview('${d.gambar}')">
-      <img src="${d.gambar.replace('/view','/preview')}" class="thumb-img">
-      <div class="thumb-overlay">
-        <span>👁</span>
-      </div>
-    </div>
-  ` : '<span class="text-muted">-</span>'}
-</td>
+  <td>${d.id}</td>
+  <td>${d.nama}</td>
+  <td>${d.tersedia}</td>
+  <td>${d.ket}</td>
 
-<button class="btn btn-sm btn-primary" onclick="edit(${i})">Edit</button>
-<button class="btn btn-sm btn-danger" onclick="hapus(${i})">Hapus</button>
-</td>
-</tr>`;
+  <!-- KOLOM GAMBAR -->
+  <td class="text-center">
+    ${d.gambar ? `
+      <div class="thumb-wrap" onclick="preview('${d.gambar}')">
+        <img src="${d.gambar.replace('/view','/preview')}" class="thumb-img">
+        <div class="thumb-overlay">
+          <span>👁</span>
+        </div>
+      </div>
+    ` : '<span class="text-muted">-</span>'}
+  </td>
+
+  <!-- KOLOM AKSI -->
+  <td class="text-center">
+    <button class="btn btn-sm btn-primary me-1" onclick="edit(${i})">
+      Edit
+    </button>
+    <button class="btn btn-sm btn-danger" onclick="hapus(${i})">
+      Hapus
+    </button>
+  </td>
+</tr>
+
 });
 $('#isiTabel').html(html);
 $('#tabelAlat').DataTable();
@@ -355,6 +364,7 @@ loadData();
 </script>
 </body>
 </html>
+
 
 
 
