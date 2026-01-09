@@ -267,103 +267,115 @@ const API_URL = "https://script.google.com/macros/s/AKfycbz8drOQYQA6UNGJp32Vw8zR
 let dataAlat = [];
 
 function loadData(){
-fetch(API_URL)
-.then(r=>r.json())
-.then(d=>{
-dataAlat=d;
-render();
-});
+  fetch(API_URL)
+    .then(r => r.json())
+    .then(d => {
+      dataAlat = d;
+      render();
+    });
 }
 
 function render(){
-$('#tabelAlat').DataTable().destroy();
-let html="";
-dataAlat.forEach((d,i)=>{
-html+=`
-<tr>
-  <td>${d.id}</td>
-  <td>${d.nama}</td>
-  <td>${d.tersedia}</td>
-  <td>${d.ket}</td>
+  if ($.fn.DataTable.isDataTable('#tabelAlat')) {
+    $('#tabelAlat').DataTable().destroy();
+  }
 
-  <!-- KOLOM GAMBAR -->
-  <td class="text-center">
-    ${d.gambar ? `
-      <div class="thumb-wrap" onclick="preview('${d.gambar}')">
-        <img src="${d.gambar.replace('/view','/preview')}" class="thumb-img">
-        <div class="thumb-overlay">
-          <span>👁</span>
-        </div>
-      </div>
-    ` : '<span class="text-muted">-</span>'}
-  </td>
+  let html = "";
+  dataAlat.forEach((d, i) => {
+    html += `
+      <tr>
+        <td>${d.id || '-'}</td>
+        <td>${d.nama}</td>
+        <td>${d.tersedia}</td>
+        <td>${d.ket}</td>
 
-  <!-- KOLOM AKSI -->
-  <td class="text-center">
-    <button class="btn btn-sm btn-primary me-1" onclick="edit(${i})">
-      Edit
-    </button>
-    <button class="btn btn-sm btn-danger" onclick="hapus(${i})">
-      Hapus
-    </button>
-  </td>
-</tr>
+        <td class="text-center">
+          ${d.gambar ? `
+            <div class="thumb-wrap" onclick="preview('${d.gambar}')">
+              <img src="${d.gambar.replace('/view','/preview')}" class="thumb-img">
+              <div class="thumb-overlay"><span>👁</span></div>
+            </div>
+          ` : '<span class="text-muted">-</span>'}
+        </td>
 
-});
-$('#isiTabel').html(html);
-$('#tabelAlat').DataTable();
+        <td class="text-center">
+          <button class="btn btn-sm btn-primary me-1" onclick="editData(${i})">
+            Edit
+          </button>
+          <button class="btn btn-sm btn-danger" onclick="hapusData(${i})">
+            Hapus
+          </button>
+        </td>
+      </tr>
+    `;
+  });
+
+  $('#isiTabel').html(html);
+  $('#tabelAlat').DataTable();
 }
 
 function bukaModalTambah(){
-$('#formAlat')[0].reset();
-$('#editIndex').val(-1);
-new bootstrap.Modal(document.getElementById('modalAlat')).show();
+  $('#formAlat')[0].reset();
+  $('#editIndex').val(-1);
+  new bootstrap.Modal(document.getElementById('modalAlat')).show();
 }
 
-function edit(i){
-const d=dataAlat[i];
-$('#editIndex').val(i);
-$('#namaAlat').val(d.nama);
-$('#ketersediaan').val(d.tersedia);
-$('#keterangan').val(d.ket);
-$('#gambarLink').val(d.gambar);
-new bootstrap.Modal(document.getElementById('modalAlat')).show();
+function editData(i){
+  const d = dataAlat[i];
+  $('#editIndex').val(i);
+  $('#namaAlat').val(d.nama);
+  $('#ketersediaan').val(d.tersedia);
+  $('#keterangan').val(d.ket);
+  $('#gambarLink').val(d.gambar || '');
+  new bootstrap.Modal(document.getElementById('modalAlat')).show();
 }
 
-function hapus(i){
-if(!confirm("Hapus data?"))return;
-fetch(API_URL,{method:"POST",body:JSON.stringify({action:"delete",row:i})})
-.then(loadData);
+function hapusData(i){
+  if (!confirm("Hapus data?")) return;
+
+  fetch(API_URL, {
+    method: "POST",
+    body: JSON.stringify({ action: "delete", row: i })
+  }).then(loadData);
 }
 
 function preview(url){
-iframePreview.src=url.replace('/view','/preview');
-new bootstrap.Modal(document.getElementById('modalPreview')).show();
+  document.getElementById('iframePreview').src =
+    url.replace('/view','/preview');
+
+  new bootstrap.Modal(
+    document.getElementById('modalPreview')
+  ).show();
 }
 
-$('#formAlat').submit(function(e){
-e.preventDefault();
-const idx=$('#editIndex').val();
-fetch(API_URL,{
-method:"POST",
-body:JSON.stringify({
-action:idx==-1?"add":"update",
-row:idx,
-nama:namaAlat.value,
-tersedia:ketersediaan.value,
-ket:keterangan.value,
-gambar:gambarLink.value
-})
-}).then(()=>{
-bootstrap.Modal.getInstance(modalAlat).hide();
-loadData();
-});
+$('#formAlat').on('submit', function(e){
+  e.preventDefault();
+
+  const idx = $('#editIndex').val();
+
+  fetch(API_URL, {
+    method: "POST",
+    body: JSON.stringify({
+      action: idx == -1 ? "add" : "update",
+      row: idx,
+      nama: $('#namaAlat').val(),
+      tersedia: $('#ketersediaan').val(),
+      ket: $('#keterangan').val(),
+      gambar: $('#gambarLink').val()
+    })
+  }).then(() => {
+    bootstrap.Modal
+      .getInstance(document.getElementById('modalAlat'))
+      .hide();
+    loadData();
+  });
 });
 
-loadData();
+$(document).ready(loadData);
 </script>
 </body>
 </html>
+
 
 
 
