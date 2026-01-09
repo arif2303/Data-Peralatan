@@ -5,86 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>SiSCa – Sistem Informasi Suku Cadang | BMKG Supadio</title>
-
 <link rel="icon" href="logo-bmkg.png">
 
+<!-- BOOTSTRAP -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+<!-- DATATABLE -->
 <link href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" rel="stylesheet">
 
 <style>
-body {
-  background: linear-gradient(135deg,#eaf2ff,#f8fbff);
-  font-family: "Segoe UI",Arial,sans-serif;
-}
-.card {
-  border-radius: 14px;
-  box-shadow: 0 10px 25px rgba(0,0,0,.08);
-}
-.table thead {
-  background: linear-gradient(135deg,#0d6efd,#0b5ed7);
-  color:white;
-}
-.btn-add {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-
-  background: linear-gradient(135deg, #198754, #20c997);
-  color: #ffffff;
-
-  border: none;
-  border-radius: 16px;
-
-  padding: 5px 14px;
-  font-size: 13px;
-  font-weight: 600;
-
-  box-shadow: 0 4px 10px rgba(25,135,84,.25);
-  transition: all .2s ease;
-}
-
-.btn-add .icon {
-  font-size: 16px;
-  line-height: 1;
-}
-
-.btn-add:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 14px rgba(25,135,84,.35);
-  opacity: .95;
-}
-
-.btn-add:active {
-  transform: translateY(0);
-  box-shadow: 0 3px 8px rgba(25,135,84,.25);
-}
-
-
-
-img.thumb {
-  height:40px;
-  border-radius:6px;
-  cursor:pointer;
-}
- .header-title {
-  color: #ffffff;
-}
-
-.header-title h2 {
-  font-weight: 800;
-  letter-spacing: 1px;
-}
-
-.header-title h4 {
-  font-weight: 600;
-  opacity: 0.9;
-}
-
-.logo-bmkg {
-  height: 90px;
-  margin-bottom: 15px;
-}
-
+/* =====================
+   GLOBAL
+===================== */
 body {
   min-height: 100vh;
   font-family: "Segoe UI", Arial, sans-serif;
@@ -92,153 +23,174 @@ body {
   overflow-x: hidden;
 }
 
-/* BACKGROUND GAMBAR */
+/* BACKGROUND BLUR */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
-
   background:
-    linear-gradient(
-      rgba(13, 110, 253, 0.25),
-      rgba(13, 110, 253, 0.25)
-    ),
+    linear-gradient(rgba(13,110,253,.25),rgba(13,110,253,.25)),
     url("suku.png") center / cover no-repeat;
-
   filter: blur(6px);
-  transform: scale(1.05); /* anti pinggir blur */
+  transform: scale(1.05);
   z-index: -2;
 }
-
-/* OVERLAY HALUS */
 body::after {
   content: "";
   position: fixed;
   inset: 0;
-  background: rgba(255,255,255,0.25);
+  background: rgba(255,255,255,.25);
   z-index: -1;
 }
+
+/* HEADER */
+.header-title {
+  text-align: center;
+  color: #fff;
+}
+.header-title h2 {
+  font-weight: 800;
+  letter-spacing: 1px;
+}
+.header-title h4 {
+  font-weight: 600;
+  opacity: .9;
+}
+.logo-bmkg {
+  height: 90px;
+  margin-bottom: 15px;
+}
+
+/* CARD */
+.card {
+  border-radius: 14px;
+  box-shadow: 0 10px 25px rgba(0,0,0,.08);
+}
+
+/* TABLE */
+.table thead {
+  background: linear-gradient(135deg,#0d6efd,#0b5ed7);
+  color: white;
+}
+
+/* BUTTON TAMBAH */
+.btn-add {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: linear-gradient(135deg,#198754,#20c997);
+  color: white;
+  border: none;
+  border-radius: 16px;
+  padding: 5px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  box-shadow: 0 4px 10px rgba(25,135,84,.25);
+  transition: .2s;
+}
+.btn-add:hover {
+  transform: translateY(-1px);
+}
+
+/* THUMBNAIL */
 .thumb-wrap {
   position: relative;
-  width: 52px;
-  height: 52px;
-  border-radius: 10px;
-  overflow: hidden;
+  display: inline-block;
   cursor: pointer;
-  box-shadow: 0 4px 10px rgba(0,0,0,.15);
-  margin: auto;
-  transition: transform .2s ease;
 }
-
-.thumb-wrap:hover {
-  transform: scale(1.05);
-}
-
 .thumb-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  height: 42px;
+  border-radius: 6px;
 }
-
 .thumb-overlay {
   position: absolute;
   inset: 0;
   background: rgba(0,0,0,.45);
+  color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
-  font-size: 20px;
   opacity: 0;
-  transition: opacity .2s ease;
+  border-radius: 6px;
+  transition: .2s;
 }
-
 .thumb-wrap:hover .thumb-overlay {
   opacity: 1;
 }
-
 </style>
 </head>
 
 <body>
-<div class="text-center mb-4 header-title">
-  <img src="logo-bmkg.png" alt="Logo BMKG" class="logo-bmkg">
 
-  <h2 class="fw-bold mb-1">
-    SISTEM INFORMASI SUKU CADANG ALOPTAMA
-  </h2>
-
-  <h4 class="fw-bold">
-    STASIUN METEOROLOGI KELAS I SUPADIO
-  </h4>
+<!-- HEADER -->
+<div class="header-title mb-4">
+  <img src="logo-bmkg.png" class="logo-bmkg">
+  <h2>SISTEM INFORMASI SUKU CADANG ALOPTAMA</h2>
+  <h4>STASIUN METEOROLOGI KELAS I SUPADIO</h4>
 </div>
 
-
-
-
+<!-- CONTENT -->
 <div class="container mb-4">
+<div class="card p-4">
 
-  <div class="card p-4">
-
-    <!-- HEADER TABEL -->
-    <div class="d-flex justify-content-between align-items-center mb-3">
-      <h5 class="mb-0 fw-semibold text-primary">
-        Daftar Suku Cadang
-      </h5>
-
-      <button class="btn btn-add" onclick="bukaModalTambah()">
-        <span class="icon">＋</span> Tambah Data
-      </button>
-    </div>
-
-    <!-- TABEL -->
-    <div class="table-responsive">
-      <table id="tabelAlat" class="table table-bordered table-hover align-middle">
-        <thead>
-          <tr>
-            <th style="width:90px">ID</th>
-            <th>Nama</th>
-            <th style="width:130px">Ketersediaan</th>
-            <th>Keterangan</th>
-            <th style="width:100px">Gambar</th>
-            <th style="width:120px">Aksi</th>
-          </tr>
-        </thead>
-        <tbody id="isiTabel"></tbody>
-      </table>
-    </div>
-
-  </div>
-
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h5 class="mb-0 fw-semibold text-primary">Daftar Suku Cadang</h5>
+  <button class="btn btn-add" onclick="bukaModalTambah()">＋ Tambah Data</button>
 </div>
 
+<div class="table-responsive">
+<table id="tabelAlat" class="table table-bordered table-hover align-middle">
+<thead>
+<tr>
+  <th>ID</th>
+  <th>Nama</th>
+  <th>Serial Number</th>
+  <th>Jumlah</th>
+  <th>Ketersediaan</th>
+  <th>Keterangan</th>
+  <th>Gambar</th>
+  <th>Aksi</th>
+</tr>
+</thead>
+<tbody id="isiTabel"></tbody>
+</table>
+</div>
+
+</div>
+</div>
 
 <!-- MODAL FORM -->
 <div class="modal fade" id="modalAlat">
 <div class="modal-dialog">
 <div class="modal-content">
 <form id="formAlat">
+
 <div class="modal-header bg-primary text-white">
-<h5 id="modalTitle">Tambah Data</h5>
+<h5>Form Suku Cadang</h5>
 <button class="btn-close" data-bs-dismiss="modal"></button>
 </div>
 
 <div class="modal-body">
 <input type="hidden" id="editIndex" value="-1">
 
-<input class="form-control mb-2" id="namaAlat" placeholder="Nama Alat" required>
-<select class="form-select mb-2" id="ketersediaan">
-<option value="Ya">Ya</option>
-<option value="Tidak">Tidak</option>
+<input id="namaAlat" class="form-control mb-2" placeholder="Nama Alat" required>
+<input id="serial" class="form-control mb-2" placeholder="Serial Number">
+<input id="jumlah" type="number" class="form-control mb-2" placeholder="Jumlah" min="0">
+
+<select id="ketersediaan" class="form-select mb-2">
+  <option value="Ya">Ya</option>
+  <option value="Tidak">Tidak</option>
 </select>
-<textarea class="form-control mb-2" id="keterangan" placeholder="Keterangan"></textarea>
-<input class="form-control" id="gambarLink" placeholder="Link Google Drive Gambar">
+
+<textarea id="keterangan" class="form-control mb-2" placeholder="Keterangan"></textarea>
+<input id="gambarLink" class="form-control" placeholder="Link Google Drive Gambar">
 </div>
 
 <div class="modal-footer">
 <button class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
 <button class="btn btn-primary" type="submit">Simpan</button>
 </div>
+
 </form>
 </div>
 </div>
@@ -257,136 +209,117 @@ body::after {
 </div>
 </div>
 
+<!-- SCRIPT -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
 
 <script>
-const API_URL = "https://script.google.com/macros/s/AKfycbz8drOQYQA6UNGJp32Vw8zRkc4TKOuNNMhivHmFUJ31zneDKdS4P5w_ZZDc6jzHcwe4JA/exec";
+const API_URL = "PASTE_API_URL_DI_SINI";
 let dataAlat = [];
+let tabel = null;
 
 function loadData(){
   fetch(API_URL)
-    .then(r => r.json())
-    .then(d => {
-      dataAlat = d;
+    .then(r=>r.json())
+    .then(d=>{
+      dataAlat = d || [];
       render();
     });
 }
 
 function render(){
-  if ($.fn.DataTable.isDataTable('#tabelAlat')) {
-    $('#tabelAlat').DataTable().destroy();
-  }
+  if(tabel) tabel.destroy();
 
-  let html = "";
-  dataAlat.forEach((d, i) => {
-    html += `
-      <tr>
-        <td>${d.id || '-'}</td>
-        <td>${d.nama}</td>
-        <td>${d.tersedia}</td>
-        <td>${d.ket}</td>
-
-        <td class="text-center">
-          ${d.gambar ? `
-            <div class="thumb-wrap" onclick="preview('${d.gambar}')">
-              <img src="${d.gambar.replace('/view','/preview')}" class="thumb-img">
-              <div class="thumb-overlay"><span>👁</span></div>
-            </div>
-          ` : '<span class="text-muted">-</span>'}
-        </td>
-
-        <td class="text-center">
-          <button class="btn btn-sm btn-primary me-1" onclick="editData(${i})">
-            Edit
-          </button>
-          <button class="btn btn-sm btn-danger" onclick="hapusData(${i})">
-            Hapus
-          </button>
-        </td>
-      </tr>
-    `;
+  let html="";
+  dataAlat.forEach((d,i)=>{
+    html+=`
+<tr>
+<td>${d.id||'-'}</td>
+<td>${d.nama||'-'}</td>
+<td>${d.serial||'-'}</td>
+<td class="text-center">${d.jumlah||0}</td>
+<td>
+<span class="badge ${d.tersedia=="Ya"?"bg-success":"bg-danger"}">
+${d.tersedia}
+</span>
+</td>
+<td>${d.ket||'-'}</td>
+<td class="text-center">
+${d.gambar?`
+<div class="thumb-wrap" onclick="preview('${d.gambar}')">
+<img src="${d.gambar.replace('/view','/preview')}" class="thumb-img">
+<div class="thumb-overlay">👁</div>
+</div>`:'-'}
+</td>
+<td class="text-center">
+<button class="btn btn-sm btn-primary me-1" onclick="editData(${i})">Edit</button>
+<button class="btn btn-sm btn-danger" onclick="hapusData(${i})">Hapus</button>
+</td>
+</tr>`;
   });
 
   $('#isiTabel').html(html);
-  $('#tabelAlat').DataTable();
+  tabel = $('#tabelAlat').DataTable({pageLength:10});
 }
 
 function bukaModalTambah(){
   $('#formAlat')[0].reset();
   $('#editIndex').val(-1);
-  new bootstrap.Modal(document.getElementById('modalAlat')).show();
+  new bootstrap.Modal(modalAlat).show();
 }
 
 function editData(i){
-  const d = dataAlat[i];
+  const d=dataAlat[i];
   $('#editIndex').val(i);
   $('#namaAlat').val(d.nama);
+  $('#serial').val(d.serial);
+  $('#jumlah').val(d.jumlah);
   $('#ketersediaan').val(d.tersedia);
   $('#keterangan').val(d.ket);
-  $('#gambarLink').val(d.gambar || '');
-  new bootstrap.Modal(document.getElementById('modalAlat')).show();
+  $('#gambarLink').val(d.gambar||"");
+  new bootstrap.Modal(modalAlat).show();
 }
 
 function hapusData(i){
-  if (!confirm("Hapus data?")) return;
-
-  fetch(API_URL, {
-    method: "POST",
-    body: JSON.stringify({ action: "delete", row: i })
+  if(!confirm("Hapus data ini?"))return;
+  fetch(API_URL,{
+    method:"POST",
+    body:JSON.stringify({action:"delete",row:i})
   }).then(loadData);
 }
 
 function preview(url){
-  document.getElementById('iframePreview').src =
-    url.replace('/view','/preview');
-
-  new bootstrap.Modal(
-    document.getElementById('modalPreview')
-  ).show();
+  iframePreview.src=url.replace('/view','/preview');
+  new bootstrap.Modal(modalPreview).show();
 }
 
-$('#formAlat').on('submit', function(e){
+$('#formAlat').submit(function(e){
   e.preventDefault();
+  const idx=$('#editIndex').val();
+  const jumlah=parseInt($('#jumlah').val())||0;
 
-  const idx = $('#editIndex').val();
-
-  fetch(API_URL, {
-    method: "POST",
-    body: JSON.stringify({
-      action: idx == -1 ? "add" : "update",
-      row: idx,
-      nama: $('#namaAlat').val(),
-      tersedia: $('#ketersediaan').val(),
-      ket: $('#keterangan').val(),
-      gambar: $('#gambarLink').val()
+  fetch(API_URL,{
+    method:"POST",
+    body:JSON.stringify({
+      action:idx==-1?"add":"update",
+      row:idx,
+      nama:$('#namaAlat').val(),
+      serial:$('#serial').val(),
+      jumlah:jumlah,
+      tersedia:jumlah>0?"Ya":"Tidak",
+      ket:$('#keterangan').val(),
+      gambar:$('#gambarLink').val()
     })
-  }).then(() => {
-    bootstrap.Modal
-      .getInstance(document.getElementById('modalAlat'))
-      .hide();
+  }).then(()=>{
+    bootstrap.Modal.getInstance(modalAlat).hide();
     loadData();
   });
 });
 
 $(document).ready(loadData);
 </script>
+
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
