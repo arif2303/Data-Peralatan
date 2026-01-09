@@ -138,27 +138,42 @@ body::after {
 
 
 
-<div class="d-flex justify-content-end mb-2">
-  <button class="btn btn-add" onclick="bukaModalTambah()">
-    <span class="icon">＋</span> Tambah Data
-  </button>
+<div class="container mb-4">
 
+  <div class="card p-4">
 
-<table id="tabelAlat" class="table table-bordered table-hover">
-<thead>
-<tr>
-<th>ID</th>
-<th>Nama</th>
-<th>Ketersediaan</th>
-<th>Keterangan</th>
-<th>Gambar</th>
-<th>Aksi</th>
-</tr>
-</thead>
-<tbody id="isiTabel"></tbody>
-</table>
+    <!-- HEADER TABEL -->
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h5 class="mb-0 fw-semibold text-primary">
+        Daftar Suku Cadang
+      </h5>
+
+      <button class="btn btn-add" onclick="bukaModalTambah()">
+        <span class="icon">＋</span> Tambah Data
+      </button>
+    </div>
+
+    <!-- TABEL -->
+    <div class="table-responsive">
+      <table id="tabelAlat" class="table table-bordered table-hover align-middle">
+        <thead>
+          <tr>
+            <th style="width:90px">ID</th>
+            <th>Nama</th>
+            <th style="width:130px">Ketersediaan</th>
+            <th>Keterangan</th>
+            <th style="width:100px">Gambar</th>
+            <th style="width:120px">Aksi</th>
+          </tr>
+        </thead>
+        <tbody id="isiTabel"></tbody>
+      </table>
+    </div>
+
+  </div>
+
 </div>
-</div>
+
 
 <!-- MODAL FORM -->
 <div class="modal fade" id="modalAlat">
@@ -293,6 +308,7 @@ loadData();
 </script>
 </body>
 </html>
+
 
 
 
