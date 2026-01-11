@@ -309,6 +309,7 @@ function preview(url){
   modalPreview.show();
 }
 
+<script>
 /* ================= SUBMIT (ADD / UPDATE) ================= */
 $('#formAlat').on('submit', function(e){
   e.preventDefault();
@@ -327,19 +328,34 @@ $('#formAlat').on('submit', function(e){
     gambar: $('#gambarLink').val()
   });
 
-  fetch(API_URL + "?" + params.toString())
-    .then(() => {
-      modalAlat.hide();        // ✅ MODAL TERTUTUP
-      $('#formAlat')[0].reset();
-      alert("Data berhasil disimpan"); // ✅ NOTIFIKASI
-      loadData();              // ✅ AUTO REFRESH
-    });
+  // kirim ke Apps Script TANPA pindah halaman
+  document.getElementById('hiddenFrame').src =
+    API_URL + "?" + params.toString();
+
+  // UI feedback
+  setTimeout(() => {
+    modalAlat.hide();                // tutup modal
+    $('#formAlat')[0].reset();       // reset form
+    $('#editIndex').val("-1");
+
+    $('#notif').removeClass('d-none').fadeIn();
+
+    loadData();                      // refresh tabel
+
+    setTimeout(() => $('#notif').fadeOut(), 2500);
+  }, 800);
 });
 </script>
 
+<div id="notif" class="alert alert-success d-none" role="alert">
+  ✅ Data berhasil disimpan
+</div>
+
+<iframe name="hiddenFrame" style="display:none;"></iframe>
 
 </body>
 </html>
+
 
 
 
