@@ -218,11 +218,17 @@ body::after {
 <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
 
 <script>
-const API_URL = "https://script.google.com/macros/s/AKfycbzrbSJtXZi_0bicuN9e-9eHZZ3lcggaJw_ext90OYPrNMO7QNICiNy7Lbab78JKrJR2WA/exec"; // GANTI URL
+const API_URL = "https://script.google.com/macros/s/AKfycbxYxyxcdNuyZzUNjBbibMoyB2bdT7M0eVyA5AgbkEnCqn7K1cHicLb35sG066IuCZzoVw/exec";
 
 let dataAlat = [];
-let modalAlat = new bootstrap.Modal(document.getElementById('modalAlat'));
-let modalPreview = new bootstrap.Modal(document.getElementById('modalPreview'));
+let modalAlat, modalPreview;
+
+/* ================= INIT ================= */
+$(document).ready(function(){
+  modalAlat = new bootstrap.Modal(document.getElementById('modalAlat'));
+  modalPreview = new bootstrap.Modal(document.getElementById('modalPreview'));
+  loadData();
+});
 
 /* ================= LOAD DATA ================= */
 function loadData(){
@@ -258,7 +264,7 @@ function renderTabel(){
           </div>` : '-'}
       </td>
       <td class="text-center">
-        <button class="btn btn-sm btn-primary" onclick="editData(${i})">Edit</button>
+        <button class="btn btn-sm btn-primary me-1" onclick="editData(${i})">Edit</button>
         <button class="btn btn-sm btn-danger" onclick="hapusData('${d.id}')">Hapus</button>
       </td>
     </tr>`;
@@ -290,18 +296,24 @@ function editData(i){
 /* ================= HAPUS ================= */
 function hapusData(id){
   if(!confirm("Hapus data ini?")) return;
-  window.location.href = API_URL + "?action=delete&id=" + encodeURIComponent(id);
+
+  fetch(API_URL + "?action=delete&id=" + encodeURIComponent(id))
+    .then(() => {
+      alert("Data berhasil dihapus");
+      loadData();
+    });
 }
 
 /* ================= PREVIEW ================= */
 function preview(url){
-  iframePreview.src = url.replace('/view','/preview');
+  document.getElementById('iframePreview').src =
+    url.replace('/view','/preview');
   modalPreview.show();
 }
 
-/* ================= SUBMIT (GET) ================= */
+/* ================= SUBMIT (ADD / UPDATE) ================= */
 $('#formAlat').on('submit', function(e){
-  e.preventDefault(); // ⛔ STOP pindah halaman
+  e.preventDefault();
 
   const id = $('#editIndex').val();
   const jumlah = parseInt($('#jumlah').val()) || 0;
@@ -319,23 +331,18 @@ $('#formAlat').on('submit', function(e){
 
   fetch(API_URL + "?" + params.toString())
     .then(() => {
-      modalAlat.hide();                 // ✅ modal tertutup
-      $('#formAlat')[0].reset();        // ✅ form bersih
-      $('#notif').removeClass('d-none'); // ✅ notifikasi
-      loadData();                       // ✅ auto refresh
-
-      setTimeout(() => {
-        $('#notif').addClass('d-none');
-      }, 2000);
-    })
-    .catch(() => {
-      alert("Gagal menyimpan data");
+      modalAlat.hide();        // ✅ MODAL TERTUTUP
+      $('#formAlat')[0].reset();
+      alert("Data berhasil disimpan"); // ✅ NOTIFIKASI
+      loadData();              // ✅ AUTO REFRESH
     });
 });
 </script>
 
+
 </body>
 </html>
+
 
 
 
