@@ -317,7 +317,11 @@ $('#formAlat').on('submit', function(e){
 
   window.location.href = API_URL + "?" + params.toString();
 });
+<div id="notif" class="alert alert-success d-none" role="alert">
+  ✅ Data berhasil disimpan
+</div>
 
+<iframe name="hiddenFrame" style="display:none;"></iframe>
 /* ================= INIT ================= */
 $(document).ready(loadData);
 </script>
@@ -331,6 +335,7 @@ $(document).ready(loadData);
 
 </body>
 </html>
+
 
 
 
