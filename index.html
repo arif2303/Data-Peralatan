@@ -216,7 +216,7 @@ body::after {
 <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
 
 <script>
-const API_URL = "https://script.google.com/macros/s/AKfycbzDVTlUFjTA2dYhwUoGlORqCIh1oytuLeo4tHmp4PGG8fmrnsq9wmIUR7eYn5oMi_c3TQ/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbzLGuN2FEaILufMeRw9oRgl2x-aA6INlY391fhiEwngH_urOrmU1fX-CaO72bWGcaeedA/exec";
 let dataAlat = [];
 let tabel = null;
 
@@ -306,10 +306,11 @@ function hapusData(i){
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
       action: "delete",
-      row: i
+      id: dataAlat[i].id
     })
   }).then(loadData);
 }
+
 
 /* ===================== PREVIEW GAMBAR ===================== */
 function preview(url){
@@ -325,20 +326,19 @@ function preview(url){
 $('#formAlat').on('submit', function(e){
   e.preventDefault();
 
-  const idx = parseInt($('#editIndex').val());
+  const id = $('#editIndex').val(); // STRING ID
   const jumlah = parseInt($('#jumlah').val()) || 0;
 
   const payload = {
-  action: idx === -1 ? "add" : "update",
-  id: idx, // kirim ID
-  nama: $('#namaAlat').val(),
-  serial: $('#serial').val(),
-  jumlah: jumlah,
-  tersedia: jumlah > 0 ? "Ya" : "Tidak",
-  ket: $('#keterangan').val(),
-  gambar: $('#gambarLink').val()
-};
-
+    action: id === "-1" ? "add" : "update",
+    id: id,
+    nama: $('#namaAlat').val(),
+    serial: $('#serial').val(),
+    jumlah: jumlah,
+    tersedia: jumlah > 0 ? "Ya" : "Tidak",
+    ket: $('#keterangan').val(),
+    gambar: $('#gambarLink').val()
+  };
 
   fetch(API_URL, {
     method: "POST",
@@ -354,12 +354,14 @@ $('#formAlat').on('submit', function(e){
   });
 });
 
+
 /* ===================== INIT ===================== */
 $(document).ready(loadData);
 </script>
 
 </body>
 </html>
+
 
 
 
