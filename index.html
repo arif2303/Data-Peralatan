@@ -218,7 +218,7 @@ body::after {
 <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
 
 <script>
-const API_URL = "https://script.google.com/macros/s/AKfycbxVmh6veHg-bi5_ovfneRTtXS5stVtNGjHDiI4JfYWS-9TriBiPpHuDkXZsABvjiSfhDQ/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbzaRblYElulisKfC87n3FLZ3tq-dnxvv4lUBzSl6OIebWS4rXZInAeuQA4h51RVgxLxQA/exec";
 
 let dataAlat = [];
 let modalAlat, modalPreview;
@@ -329,25 +329,29 @@ $('#formAlat').on('submit', function(e){
     gambar: $('#gambarLink').val()
   });
 
- fetch(API_URL + "?" + params.toString())
-  .then(res => res.json())
-  .then(data => {
-    if (data.status === "success") {
-      alert("Data berhasil disimpan");
-      modalAlat.hide();
-      loadData();
-    }
-  })
-  .catch(err => {
-    alert("Gagal menyimpan!");
-    console.error(err);
-  });
+  fetch(API_URL + "?" + params.toString())
+    .then(res => res.json())
+    .then(data => {
+      if (data.status === "success") {
+        alert("Data berhasil disimpan");
+        modalAlat.hide();
+        loadData();
+      }
+    })
+    .catch(err => {
+      alert("Gagal menyimpan!");
+      console.error(err);
+    });
+
+}); // <-- INI YANG TADI KURANG
+
 
 </script>
 
 
 </body>
 </html>
+
 
 
 
